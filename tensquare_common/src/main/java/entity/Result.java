@@ -8,23 +8,23 @@ package entity;
  */
 public class Result {
 
-    private Integer code;
     private Boolean flag;
+    private Integer code;
     private String message;
     private Object data;
 
     public Result() {
     }
 
-    public Result(Integer code, Boolean flag, String message) {
-        this.code = code;
+    public Result(Boolean flag, Integer code, String message) {
         this.flag = flag;
+        this.code = code;
         this.message = message;
     }
 
-    public Result(Integer code, Boolean flag, String message, Object data) {
-        this.code = code;
+    public Result(Boolean flag, Integer code, String message, Object data) {
         this.flag = flag;
+        this.code = code;
         this.message = message;
         this.data = data;
     }
