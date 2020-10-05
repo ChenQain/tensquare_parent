@@ -1,7 +1,7 @@
 package entity;
 
 /**
- * TODO 公共结果集
+ * 公共结果集
  *
  * @author Eden.
  * @date 2020/9/22 23:10
