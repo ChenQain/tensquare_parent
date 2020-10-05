@@ -63,23 +63,9 @@ public class ArticleController {
 
     @ApiOperation("文章分页条件查询")
     @PostMapping(value = "search/{page}/{size}")
-    //之前接受文章数据，使用pojo，但是现在根据条件查询
-    //而所有的条件都需要进行判断，遍历pojo的所有属性需要使用反射的方式，成本较高，性能较低
-    //直接使用集合的方式遍历，这里接受数据改为Map集合
-    public Result findByPage(@PathVariable Integer page,
-                             @PathVariable Integer size,
-                             @RequestBody Map<String, Object> map) {
-        //根据条件分页查询
-        Page<Article> pageData = articleService.findByPage(map, page, size);
-
-        //封装分页返回对象
-        PageResult<Article> pageResult = new PageResult<>(
-                pageData.getTotal(), pageData.getRecords()
-        );
-
-        //返回数据
-        return new Result(true, StatusCode.OK, "查询成功", pageResult);
-
+    public Result search(@RequestBody Map map, @PathVariable int page, @PathVariable int size) {
+        Page page1 = articleService.search(map, page, size);
+        return new Result(true, StatusCode.OK, "查询成功", new PageResult(page1.getTotal(), page1.getRecords()));
     }
 
     @GetMapping(value = "/exception")

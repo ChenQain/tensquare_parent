@@ -81,30 +81,16 @@ public class ArticleService {
      * @param size 每页数量
      * @return 文章分页集合
      */
-    public Page<Article> findByPage(Map<String, Object> map, Integer page, Integer size) {
-        //设置查询条件
-        EntityWrapper<Article> wrapper = new EntityWrapper<>();
-        Set<String> keySet = map.keySet();
-        for (String key : keySet) {
-            // if (map.get(key) != null) {
-            //     wrapper.eq(key, map.get(key));
-            // }
-
-            //第一个参数是否把后面的条件加入到查询条件中
-            //和上面的if判断的写法是一样的效果，实现动态sql
-            wrapper.eq(map.get(key) != null, key, map.get(key));
+    public Page search(Map map, int page, int size) {
+        EntityWrapper wrapper = new EntityWrapper<Article>();
+        Set<String> fieldSet = map.keySet();
+        for (String field : fieldSet) {
+            wrapper.eq(null != map.get(field), field, map.get(field));
         }
 
-        //设置分页参数
-        Page<Article> pageData = new Page<>(page, size);
-
-        //执行查询
-        //第一个是分页参数，第二个是查询条件
-        List<Article> list = articleDao.selectPage(pageData, wrapper);
-
-        pageData.setRecords(list);
-
-        //返回
-        return pageData;
+        Page page1 = new Page(page, size);
+        List list = articleDao.selectPage(page1, wrapper);
+        page1.setRecords(list);
+        return page1;
     }
 }

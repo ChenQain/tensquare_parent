@@ -3,9 +3,9 @@ package entity;
 import java.util.List;
 
 /**
- * TODO 公共分页结果集
+ * 公共分页结果集
  *
- * @author Eden.
+ * @author Eden
  * @date 2020/9/22 23:19
  */
 public class PageResult<T> {
