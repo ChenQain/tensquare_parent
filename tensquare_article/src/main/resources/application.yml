@@ -5,9 +5,16 @@ spring:
     name: tensquare_article #服务名称
   datasource: #数据库连接属性
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://39.97.162.179:13306/tensquare_article?characterEncoding=utf-8
+    url: jdbc:mysql://39.97.162.179:13306/tensquare_article?characterEncoding=utf-8&useSSL=false
     username: root
     password: root
+
+  data:
+    mongodb: #MongoDB 配置
+      database: commentDB
+      host: 39.97.162.179
+  redis: #Redis 配置
+    host: 39.97.162.179
 
 # Mybatis-Plus 配置
 mybatis-plus:
@@ -24,3 +31,4 @@ mybatis-plus:
       lazyLoadingEnabled: true #延时加载的开关
       multipleResultSetsEnabled: true #开启延时加载，否则按需加载属性
       log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #打印sql语句,调试用
+
