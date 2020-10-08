@@ -1,12 +1,13 @@
-package com.tensquare.article.config;
+package com.tensquare.user.config;
 
 import com.baomidou.mybatisplus.plugins.PaginationInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * @Author: Eden
- * @Date: 2020/10/5 21:41
+ * MybatisPlusConfig
+ *
+ * @Author : eden 2020-10-07 15:33
  */
 @Configuration
 public class MybatisPlusConfig {

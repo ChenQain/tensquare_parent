@@ -17,7 +17,7 @@ import java.util.List;
  *
  * @Author : eden 2020-10-06 16:18
  */
-@Api("文章评论")
+@Api(tags = "评论管理")
 @RestController
 @RequestMapping("comment")
 @CrossOrigin

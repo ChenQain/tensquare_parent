@@ -6,6 +6,7 @@ import com.tensquare.article.service.ArticleService;
 import entity.PageResult;
 import entity.Result;
 import entity.StatusCode;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import java.util.Map;
  *
  * @Author : eden 2020-09-30 16:17
  */
+@Api(tags = "文章管理")
 @RestController
 @RequestMapping("/article")
 @CrossOrigin
@@ -69,6 +71,7 @@ public class ArticleController {
         return new Result(true, StatusCode.OK, "查询成功", new PageResult(page1.getTotal(), page1.getRecords()));
     }
 
+    @ApiOperation("异常")
     @GetMapping(value = "/exception")
     public Result exception() throws Exception {
         throw new Exception("测试统一异常处理");

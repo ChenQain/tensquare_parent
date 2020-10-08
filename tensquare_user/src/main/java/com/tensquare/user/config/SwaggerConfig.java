@@ -1,4 +1,4 @@
-package com.tensquare.article.config;
+package com.tensquare.user.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -7,7 +7,6 @@ import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.ArrayList;
 
@@ -46,8 +45,8 @@ public class SwaggerConfig {
      */
     private ApiInfo apiInfo() {
         return new ApiInfo(
-                "十次方-文章微服务",
-                "十次方项目-文章微服务接口文档",
+                "十次方-用户微服务",
+                "十次方项目-用户微服务接口文档",
                 "v1.0",
                 null,
                 null,
