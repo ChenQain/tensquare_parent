@@ -18,21 +18,18 @@ public class EncryptTest {
     private RsaService rsaService;
 
     @Before
-    public void before() throws Exception{
+    public void before() {
     }
 
     @After
-    public void after() throws Exception {
+    public void after() {
     }
 
     @Test
     public void genEncryptDataByPubKey() {
-        String data = "{\"title\":\"java\"}";
-
+        String data = "{'articleid':'2','content':'测试加密新增','userid':'2'}";
         try {
-
             String encData = rsaService.RSAEncryptDataPEM(data, RsaKeys.getServerPubKey());
-
             System.out.println("data: " + data);
             System.out.println("encData: " + encData);
         } catch (Exception e) {
