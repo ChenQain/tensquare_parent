@@ -11,20 +11,20 @@ import org.apache.commons.codec.Charsets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StreamUtils;
 
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 
 /**
  * RSARequestFilter
  *
  * @Author : eden 2020-10-08 10:05
  */
+@Component
 public class RSARequestFilter extends ZuulFilter {
 
     @Autowired
@@ -32,32 +32,36 @@ public class RSARequestFilter extends ZuulFilter {
 
     @Override
     public String filterType() {
+        // 过滤器在什么环境下执行，解密操作需要在转发执行之前执行
         return FilterConstants.PRE_TYPE;
     }
 
     @Override
     public int filterOrder() {
+        // 设置过滤器执行顺序
         return FilterConstants.PRE_DECORATION_FILTER_ORDER + 1;
     }
 
     @Override
     public boolean shouldFilter() {
+        // 是否使用过滤器
         return true;
     }
 
     @Override
     public Object run() {
+        // 具体的执行逻辑
         RequestContext ctx = RequestContext.getCurrentContext();
         HttpServletRequest request = ctx.getRequest();
-        HttpServletResponse response = ctx.getResponse();
+        // HttpServletResponse response = ctx.getResponse();
 
         try {
 
             String decryptData = null;
-            HashMap dataMap = null;
-            String token = null;
+            // HashMap dataMap = null;
+            // String token = null;
             String url = request.getRequestURL().toString();
-            InputStream stream = ctx.getRequest().getInputStream();
+            InputStream stream = request.getInputStream();
             String requestParam = StreamUtils.copyToString(stream, Charsets.UTF_8);
             if (!Strings.isNullOrEmpty(requestParam)) {
                 System.out.println(String.format("请求体中的密文: %s", requestParam));

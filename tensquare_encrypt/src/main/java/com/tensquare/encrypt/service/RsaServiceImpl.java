@@ -25,6 +25,7 @@ public class RsaServiceImpl implements RsaService {
      * @return
      * @throws Exception
      */
+    @Override
     public String RSADecryptDataPEM(String encryptData, String prvKey) throws Exception {
     	byte[] encryptBytes = encryptData.getBytes();
         byte[] prvdata = RSA.decryptByPrivateKey(Base64Utils.decode(encryptData), prvKey);
@@ -49,6 +50,7 @@ public class RsaServiceImpl implements RsaService {
      * @return
      * @throws Exception
      */
+    @Override
     public String RSAEncryptDataPEM(String data, String pubKey) throws Exception {
 
         byte[] pubdata = RSA.encryptByPublicKey(data.getBytes("UTF-8"), pubKey);
