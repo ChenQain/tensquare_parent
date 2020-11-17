@@ -27,7 +27,7 @@ public class EncryptTest {
 
     @Test
     public void genEncryptDataByPubKey() {
-        String data = "{'title':'java'}";
+        String data = "{\"title\":\"java\"}";
         try {
             String encData = rsaService.RSAEncryptDataPEM(data, RsaKeys.getServerPubKey());
             System.out.println("data: " + data);

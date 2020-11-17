@@ -64,11 +64,11 @@ public class RSARequestFilter extends ZuulFilter {
             InputStream stream = request.getInputStream();
             String requestParam = StreamUtils.copyToString(stream, Charsets.UTF_8);
             if (!Strings.isNullOrEmpty(requestParam)) {
-                System.out.println(String.format("请求体中的密文: %s", requestParam));
+                System.out.printf("请求体中的密文: %s%n", requestParam);
                 decryptData = rsaService.RSADecryptDataPEM(requestParam, RsaKeys.getServerPrvKeyPkcs8());
-                System.out.println(String.format("解密后的内容: %s", decryptData));
+                System.out.printf("解密后的内容: %s%n", decryptData);
             }
-            System.out.println(String.format("request: %s >>> %s, data=%s", request.getMethod(), url, decryptData));
+            System.out.printf("request: %s >>> %s, data=%s%n", request.getMethod(), url, decryptData);
             if (!Strings.isNullOrEmpty(decryptData)) {
                 System.out.println("json字符串写入request body");
                 final byte[] reqBodyBytes = decryptData.getBytes();
@@ -91,7 +91,7 @@ public class RSARequestFilter extends ZuulFilter {
             }
             System.out.println("转发request");
             // 设置request请求头中的Content-Type为application/json，否则api接口模块需要进行url转码操作
-            ctx.addZuulRequestHeader("Content-Type", String.valueOf(MediaType.APPLICATION_JSON) + ";charset=UTF-8");
+            ctx.addZuulRequestHeader("Content-Type", MediaType.APPLICATION_JSON + ";charset=UTF-8");
         } catch (Exception e) {
             System.out.println(this.getClass().getName() + "运行出错" + e.getMessage());
         }
