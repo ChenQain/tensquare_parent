@@ -22,17 +22,27 @@ public class NoticeController {
     @Autowired
     private NoticeService noticeService;
 
-    // 1. 根据id查询消息通知
-    // http://127.0.0.1:9014/notice/{id}  GET
-    @RequestMapping(value = "{id}", method = RequestMethod.GET)
+    /**
+     * 根据id查询消息通知
+     *
+     * @param id 消息id
+     * @return 查询结果
+     */
+    @GetMapping("{id}")
     public Result selectById(@PathVariable String id) {
         Notice notice = noticeService.selectById(id);
         return new Result(true, StatusCode.OK, "查询成功", notice);
     }
 
-    // 2. 根据条件分页查询消息通知
-    // http://127.0.0.1:9014/notice/search/{page}/{size}  POST
-    @RequestMapping(value = "search/{page}/{size}", method = RequestMethod.POST)
+    /**
+     * 根据条件分页查询消息通知
+     *
+     * @param notice 条件
+     * @param page   页码
+     * @param size   每页条数
+     * @return 查询结果
+     */
+    @PostMapping("search/{page}/{size}")
     public Result selectByList(@RequestBody Notice notice,
                                @PathVariable Integer page,
                                @PathVariable Integer size) {
@@ -45,30 +55,43 @@ public class NoticeController {
         return new Result(true, StatusCode.OK, "查询成功", pageResult);
     }
 
-    // 3. 新增通知
-    // http://127.0.0.1:9014/notice  POST
-    @RequestMapping(method = RequestMethod.POST)
+    /**
+     * 新增通知
+     *
+     * @param notice 通知
+     * @return 新增结果
+     */
+    @PostMapping
     public Result save(@RequestBody Notice notice) {
         noticeService.save(notice);
         return new Result(true, StatusCode.OK, "新增成功");
     }
 
-        
-    // 4. 修改通知
-    // http://127.0.0.1:9014/notice  PUT
-    @RequestMapping(method = RequestMethod.PUT)
+    /**
+     * 修改通知
+     *
+     * @param notice 通知
+     * @return 修改结果
+     */
+    @PutMapping
     public Result updateById(@RequestBody Notice notice) {
         noticeService.updateById(notice);
         return new Result(true, StatusCode.OK, "修改成功");
     }
 
-    // 5. 根据用户id查询该用户的待推送消息（新消息）
-    // http://127.0.0.1:9014/notice/fresh/{userId}/{page}/{size}  GET
-    @RequestMapping(value = "fresh/{userId}/{page}/{size}", method = RequestMethod.GET)
+    /**
+     * 根据用户id查询该用户的待推送消息（新消息）
+     *
+     * @param userId 用户id
+     * @param page   页码
+     * @param size   每页条数
+     * @return 查询结果
+     */
+    @GetMapping("fresh/{userId}/{page}/{size}")
     public Result freshPage(@PathVariable String userId,
                             @PathVariable Integer page,
                             @PathVariable Integer size) {
-        Page<NoticeFresh> pageData = noticeService.freshPage(userId,page,size);
+        Page<NoticeFresh> pageData = noticeService.freshPage(userId, page, size);
 
         PageResult<NoticeFresh> pageResult = new PageResult<>(
                 pageData.getTotal(), pageData.getRecords()
@@ -76,10 +99,14 @@ public class NoticeController {
 
         return new Result(true, StatusCode.OK, "查询成功", pageResult);
     }
-    
-    // 6. 删除待推送消息（新消息）
-    // http://127.0.0.1:9014/notice/fresh  DELETE
-    @RequestMapping(value = "fresh",method = RequestMethod.DELETE)
+
+    /**
+     * 删除待推送消息（新消息）
+     *
+     * @param noticeFresh
+     * @return
+     */
+    @RequestMapping(value = "fresh", method = RequestMethod.DELETE)
     public Result freshDelete(@RequestBody NoticeFresh noticeFresh) {
         noticeService.freshDelete(noticeFresh);
         return new Result(true, StatusCode.OK, "删除成功");
