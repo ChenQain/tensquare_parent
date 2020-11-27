@@ -60,8 +60,8 @@ public class NoticeService {
 
         //待推送消息入库，新消息提醒
         NoticeFresh noticeFresh = new NoticeFresh();
-        noticeFresh.setNoticeId(id);//消息id
-        noticeFresh.setUserId(notice.getReceiverId());//待通知用户的id
+        noticeFresh.setNoticeId(id);
+        noticeFresh.setUserId(notice.getReceiverId());
         noticeFreshDao.insert(noticeFresh);
     }
 

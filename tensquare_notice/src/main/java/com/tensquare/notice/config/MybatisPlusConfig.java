@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
  * @Author : eden 2020-11-18 19:00
  */
 @Configuration
-@MapperScan("com.tensquare.notice.pojo")
+@MapperScan("com.tensquare.notice.dao")
 public class MybatisPlusConfig {
     @Bean
     public PaginationInterceptor createPaginationInterceptor() {

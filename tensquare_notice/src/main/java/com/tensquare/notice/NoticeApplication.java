@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
-import springfox.documentation.oas.annotations.EnableOpenApi;
 import util.IdWorker;
 
 /**
@@ -16,14 +15,13 @@ import util.IdWorker;
 @SpringBootApplication
 @EnableEurekaClient
 @EnableFeignClients
-@EnableOpenApi
 public class NoticeApplication {
     public static void main(String[] args) {
         SpringApplication.run(NoticeApplication.class, args);
     }
 
     @Bean
-    public IdWorker idWorker() {
+    public IdWorker idWorkker() {
         return new IdWorker(1, 1);
     }
 }
