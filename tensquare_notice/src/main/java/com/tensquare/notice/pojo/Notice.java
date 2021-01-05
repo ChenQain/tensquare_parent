@@ -14,7 +14,7 @@ import java.util.Date;
  *
  * @Author : eden 2020-11-18 17:08
  */
-@TableName
+@TableName("tb_notice")
 @Data
 public class Notice implements Serializable {
 

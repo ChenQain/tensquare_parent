@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  *
  * @Author : eden 2020-11-27 11:08
  */
-@FeignClient(value = "tensquare_article")
+@FeignClient(value = "tensquare-article")
 public interface ArticleClient {
     /**
      * 根据ID查询文章
@@ -20,5 +20,5 @@ public interface ArticleClient {
      * @return 查询结果
      */
     @RequestMapping(value = "/article/{articleId}", method = RequestMethod.GET)
-    Result findByProblemId(@PathVariable("articleId") String articleId);
+    Result findById(@PathVariable("articleId") String articleId);
 }

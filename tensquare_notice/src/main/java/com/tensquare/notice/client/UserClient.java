@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  *
  * @Author : eden 2020-11-27 11:09
  */
-@FeignClient(value = "tensquare_user")
+@FeignClient(value = "tensquare-user")
 public interface UserClient {
     /**
      * 根据ID查询用户

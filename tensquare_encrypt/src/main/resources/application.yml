@@ -2,7 +2,7 @@ server:
   port: 9013
 spring:
   application:
-    name: tensquare_encrypt
+    name: tensquare-encrypt
 zuul:
   routes:
     tensquare-article: #文章
