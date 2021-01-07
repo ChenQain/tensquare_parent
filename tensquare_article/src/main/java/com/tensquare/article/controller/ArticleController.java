@@ -76,4 +76,21 @@ public class ArticleController {
     public Result exception() throws Exception {
         throw new Exception("测试统一异常处理");
     }
+
+    /**
+     * 订阅或者取消订阅文章作者
+     *
+     * @param map userId-用户id articleId 文章id
+     * @return Boolean true-订阅 false-取消订阅
+     */
+    @PostMapping("/subscribe")
+    public Result subscribe(@RequestBody Map map) {
+        //根据文章id，订阅文章作者，返回订阅状态，true表示订阅成功，false表示取消订阅成功
+        Boolean flag = articleService.subscribe(map.get("userId").toString(), map.get("articleId").toString());
+        if (flag) {
+            return new Result(true, StatusCode.OK, "订阅成功");
+        } else {
+            return new Result(true, StatusCode.OK, "订阅取消");
+        }
+    }
 }

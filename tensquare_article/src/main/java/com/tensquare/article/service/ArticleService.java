@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.tensquare.article.dao.ArticleDao;
 import com.tensquare.article.pojo.Article;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import util.IdWorker;
 
@@ -22,9 +23,10 @@ public class ArticleService {
 
     @Autowired
     private ArticleDao articleDao;
-
     @Autowired
     private IdWorker idWorker;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     /**
      * 查询所有
@@ -92,5 +94,29 @@ public class ArticleService {
         List list = articleDao.selectPage(page1, wrapper);
         page1.setRecords(list);
         return page1;
+    }
+
+    /**
+     * 订阅或者取消订阅文章作者
+     *
+     * @param userId    用户id
+     * @param articleId 文章id
+     * @return Boolean true-订阅 false-取消订阅
+     */
+    public Boolean subscribe(String userId, String articleId) {
+        String authorId = articleDao.selectById(articleId).getUserid();
+
+        String userKey = "article_subscribe_" + userId;
+        String authorKey = "article_subscribe_" + userId;
+
+        Boolean flag = redisTemplate.boundSetOps(userKey).isMember(authorId);
+        if (flag) {
+            redisTemplate.boundSetOps(userKey).remove(authorId);
+            redisTemplate.boundSetOps(userKey).remove(authorId);
+        } else {
+            redisTemplate.boundSetOps(userKey).add(authorId);
+            redisTemplate.boundSetOps(userKey).add(authorId);
+        }
+        return !flag;
     }
 }

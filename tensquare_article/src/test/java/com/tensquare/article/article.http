@@ -1,0 +1,49 @@
+### 查询所有文章
+GET http://localhost:9004/article
+
+### 查询文章
+GET http://localhost:9004/article/1
+
+### 添加文章
+POST http://localhost:9004/article
+Content-Type: application/json
+
+{
+  "columnid": "1",
+  "userid": "1",
+  "title": "文章1",
+  "content": "这是一篇文章",
+  "ispublic": "是",
+  "istop": "是",
+  "visits": "8",
+  "thumbup": "5",
+  "comment": "5",
+  "state": "1",
+  "channelid": "1000",
+  "url": "https://www.cnblogs.com/EdenChen/p/14200086.html",
+  "type": "1"
+}
+
+### 修改文章
+PUT http://localhost:9004/article/{{id}}
+
+### 删除文章
+DELETE http://localhost:9004/article/1
+
+### 文章分页条件查询
+POST http://localhost:9004/article/search/1/10
+Content-Type: application/json
+
+{}
+
+### 异常
+GET http://localhost:9004/article/exception
+
+### 订阅或者取消订阅文章作者
+POST http://localhost:9004/article/subscribe
+Content-Type: application/json
+
+{
+  "userId": "1",
+  "articleId": "1"
+}
