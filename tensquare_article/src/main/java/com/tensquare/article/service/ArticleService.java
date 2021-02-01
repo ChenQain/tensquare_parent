@@ -2,13 +2,16 @@ package com.tensquare.article.service;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.tensquare.article.client.NoticeClient;
 import com.tensquare.article.dao.ArticleDao;
 import com.tensquare.article.pojo.Article;
+import com.tensquare.article.pojo.Notice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import util.IdWorker;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -27,6 +30,8 @@ public class ArticleService {
     private IdWorker idWorker;
     @Autowired
     private RedisTemplate redisTemplate;
+    @Autowired
+    private NoticeClient noticeClient;
 
     /**
      * 查询所有
@@ -53,8 +58,42 @@ public class ArticleService {
      * @param article 文章
      */
     public void add(Article article) {
-        article.setId(idWorker.nextId() + "");
+        // TODO: 使用jwt鉴权获取当前用户信息，用户id，也就是文章作者id
+        String userId = "3";
+
+        // 使用分布式id生成器
+        String articleId = idWorker.nextId() + "";
+        article.setId(articleId);
+
+        // 初始化数据
+        article.setVisits(0);
+        article.setThumbup(0);
+        article.setComment(0);
+
+        // 新增
         articleDao.insert(article);
+
+        // 新增文章后，创建消息，通知订阅者
+        // 获取订阅者信息
+        String authorKey = "article_subscribe_" + userId;
+        Set<String> members = redisTemplate.boundSetOps(authorKey).members();
+        Notice notice;
+        if (members != null && members.size() > 0) {
+            // 给订阅者创建消息通知
+            for (String uid : members) {
+                // 创建消息对象
+                notice = new Notice();
+                notice.setReceiverId(uid);
+                notice.setOperatorId(userId);
+                notice.setAction("publish");
+                notice.setTargetType("article");
+                notice.setTargetName(article.getTitle());
+                notice.setTargetId(articleId);
+                notice.setCreatetime(new Date());
+                notice.setType("sys");
+                noticeClient.add(notice);
+            }
+        }
     }
 
     /**
@@ -107,15 +146,15 @@ public class ArticleService {
         String authorId = articleDao.selectById(articleId).getUserid();
 
         String userKey = "article_subscribe_" + userId;
-        String authorKey = "article_subscribe_" + userId;
+        String authorKey = "article_subscribe_" + authorId;
 
         Boolean flag = redisTemplate.boundSetOps(userKey).isMember(authorId);
         if (flag) {
             redisTemplate.boundSetOps(userKey).remove(authorId);
-            redisTemplate.boundSetOps(userKey).remove(authorId);
+            redisTemplate.boundSetOps(authorKey).remove(userId);
         } else {
             redisTemplate.boundSetOps(userKey).add(authorId);
-            redisTemplate.boundSetOps(userKey).add(authorId);
+            redisTemplate.boundSetOps(authorKey).add(userId);
         }
         return !flag;
     }
