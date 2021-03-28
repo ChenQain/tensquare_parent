@@ -11,16 +11,16 @@ import org.springframework.web.bind.annotation.RequestBody;
  *
  * @Author : eden 2021-01-07 20:39
  */
-@FeignClient
+@FeignClient("tensquare-notice")
 public interface NoticeClient {
 
     /**
      * 添加消息
      *
      * @param notice 消息
-     * @return
+     * @return Result
      */
     @PostMapping("notice")
-    public Result add(@RequestBody Notice notice);
+    Result add(@RequestBody Notice notice);
 
 }

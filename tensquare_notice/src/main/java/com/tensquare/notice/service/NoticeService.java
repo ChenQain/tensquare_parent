@@ -36,19 +36,33 @@ public class NoticeService {
     @Autowired
     private UserClient userClient;
 
+    /**
+     * 根据id查询实体
+     *
+     * @param id 消息id
+     * @return 消息
+     */
     public Notice selectById(String id) {
         Notice notice = noticeDao.selectById(id);
         getNoticeInfo(notice);
         return notice;
     }
 
+    /**
+     * 条件查询
+     *
+     * @param notice 消息
+     * @param page   当前页码
+     * @param size   每页条数
+     * @return 分页消息
+     */
     public Page<Notice> selectByPage(Notice notice, Integer page, Integer size) {
         //封装分页对象
         Page<Notice> pageData = new Page<>(page, size);
 
         //执行分页查询
         List<Notice> noticeList = noticeDao.selectPage(pageData, new EntityWrapper<>(notice));
-        noticeList.forEach(n -> this.getNoticeInfo(n));
+        noticeList.forEach(this::getNoticeInfo);
 
         //设置结果集到分页对象中
         pageData.setRecords(noticeList);
@@ -57,6 +71,11 @@ public class NoticeService {
         return pageData;
     }
 
+    /**
+     * 保存消息
+     *
+     * @param notice 消息
+     */
     public void save(Notice notice) {
         //设置初始值
         //设置状态 0表示未读  1表示已读
@@ -79,6 +98,14 @@ public class NoticeService {
         noticeDao.updateById(notice);
     }
 
+    /**
+     * 根据用户id查询该用户的待推送消息（新消息）
+     *
+     * @param userId 用户id
+     * @param page   页码
+     * @param size   每页条数
+     * @return 查询结果
+     */
     public Page<NoticeFresh> freshPage(String userId, Integer page, Integer size) {
         //封装查询条件
         NoticeFresh noticeFresh = new NoticeFresh();
@@ -107,10 +134,12 @@ public class NoticeService {
      * @param notice 消息
      */
     private void getNoticeInfo(Notice notice) {
+        // 获取用户信息
         Result userResult = userClient.findById(notice.getOperatorId());
         HashMap userMap = (HashMap) userResult.getData();
         notice.setOperatorName(userMap.get("nickname").toString());
 
+        // 获取文章信息
         if ("article".equals(notice.getTargetType())) {
             Result articleResult = articleClient.findById(notice.getTargetId());
             HashMap articleMap = (HashMap) articleResult.getData();

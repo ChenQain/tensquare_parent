@@ -9,6 +9,7 @@ import entity.StatusCode;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,6 +28,9 @@ public class ArticleController {
 
     @Autowired
     private ArticleService articleService;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @ApiOperation("查询所有文章")
     @GetMapping
@@ -93,4 +97,26 @@ public class ArticleController {
             return new Result(true, StatusCode.OK, "订阅取消");
         }
     }
+
+    @PutMapping("/thumbup/{articleId}")
+    public Result thumbup(@PathVariable String articleId) {
+        // 模拟用户id
+        String userId = "4";
+        String key = "thumbup_article_" + userId + "_" + articleId;
+
+        // 查询用户点赞信息，根据用户id及文章id
+        Object flag = redisTemplate.opsForValue().get(key);
+
+        // 判断查询到的结果是否为空
+        if (flag == null) {
+            // 如果为空，表示用户没有被点过赞，可以点赞
+            articleService.thumbup(articleId, userId);
+            // 点赞成功，保存点赞信息
+            redisTemplate.opsForValue().set(key, 1);
+
+            return new Result(true, StatusCode.OK, "点赞成功");
+        }
+        return new Result(true, StatusCode.OK, "不能重复点赞");
+    }
+
 }

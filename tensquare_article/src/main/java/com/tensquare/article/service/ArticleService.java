@@ -158,4 +158,25 @@ public class ArticleService {
         }
         return !flag;
     }
+
+    public void thumbup(String articleId, String userId) {
+        // 文章点赞
+        Article article = articleDao.selectById(articleId);
+        article.setThumbup(article.getThumbup() + 1);
+        articleDao.updateById(article);
+
+        // 消息通知
+        Notice notice = new Notice();
+        notice.setReceiverId(article.getUserid());
+        notice.setOperatorId(userId);
+        notice.setAction("thumbup");
+        notice.setTargetType("article");
+        notice.setTargetName(article.getTitle());
+        notice.setTargetId(articleId);
+        notice.setCreatetime(new Date());
+        notice.setType("user");
+        notice.setState("0");
+
+        noticeClient.add(notice);
+    }
 }
