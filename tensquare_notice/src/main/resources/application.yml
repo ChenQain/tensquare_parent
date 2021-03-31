@@ -5,11 +5,11 @@ spring:
     name: tensquare-notice
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://39.97.162.179:13306/tensquare_notice?characterEncoding=utf-8&useSSL=false
-    username: root
-    password: root
+    url: jdbc:mysql://42.193.40.200:3306/tensquare_notice?characterEncoding=utf-8&useSSL=false
+    username: tensquare
+    password: 123456
   redis:
-    host: 39.97.162.179
+    host: 42.193.40.200
 # Mybatis-Plus 配置
 mybatis-plus:
   #  mapper-locations: classpath:/mapper/*Mapper.xml
