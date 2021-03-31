@@ -1,0 +1,17 @@
+### 根据id查询评论
+GET http://localhost:9004/comment/1377130355156455424
+
+### 查询所有
+GET http://localhost:9004/findAll
+
+### 新增
+POST http://localhost:9004/comment
+Content-Type: application/json
+
+{
+  "articleid": "1",
+  "content": "This is a comment",
+  "userid": "1",
+  "parentid": "1",
+  "thumbup": 8
+}

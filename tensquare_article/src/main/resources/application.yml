@@ -11,10 +11,8 @@ spring:
 
   data:
     mongodb: #MongoDB 配置
-      database: commentDB
+      database: commentdb
       host: 42.193.40.200
-      username: admin
-      password: 123456
   redis: #Redis 配置
     host: 42.193.40.200
 
